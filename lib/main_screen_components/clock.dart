@@ -11,6 +11,17 @@ class _ClockTimerState extends State<ClockTimer> {
   @override
   Widget build(BuildContext context) {
     // todo implement animation of clock
-    return Image.asset("assets/Pics/Clock-min.jpg");
+    return Container(
+      color: Colors.white,
+      width: MediaQuery.of(context).size.width - 200,
+      height: 300,
+      child: Row(
+        children: [
+          Container(
+            child: Text("23"),
+          )
+        ],
+      ),
+    );
   }
 }
