@@ -6,6 +6,16 @@ class OnKeyBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Todo map buttons to image
-    return Image.asset("assets/Pics/Keyboard-min.png");
+    return Transform.scale(
+      scale: 1.3,
+      child: Transform.translate(
+        offset: Offset(50, 100),
+        child: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/Pics/Keyboard-min.png"))),
+        ),
+      ),
+    );
   }
 }
