@@ -11,6 +11,6 @@ class _CommandDisplayState extends State<CommandDisplay> {
   @override
   Widget build(BuildContext context) {
     // todo implement animation of beeper
-    return Image.asset("assets/Pics/PC.png");
+    return Image.asset("assets/Pics/PC-min.png");
   }
 }

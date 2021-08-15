@@ -49,6 +49,10 @@ flutter:
     - assets/Pics/Clock.jpg
     - assets/Pics/Keyboard.png
     - assets/Pics/PC.png
+    - assets/Pics/PC-min.png
+    - assets/Pics/Background-min.jpg
+    - assets/Pics/Clock-min.jpg
+    - assets/Pics/Keyboard-min.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

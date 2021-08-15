@@ -11,6 +11,6 @@ class _ClockTimerState extends State<ClockTimer> {
   @override
   Widget build(BuildContext context) {
     // todo implement animation of clock
-    return Image.asset("assets/Pics/Clock.jpg");
+    return Image.asset("assets/Pics/Clock-min.jpg");
   }
 }

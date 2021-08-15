@@ -16,7 +16,7 @@ class _TerminalState extends State<Terminal> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset("assets/Pics/Background.jpg"),
+        Image.asset("assets/Pics/Background-min.jpg"),
         Container(
           child: Column(
             children: [
