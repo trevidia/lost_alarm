@@ -19,22 +19,21 @@ class _TerminalState extends State<Terminal> {
       child: Stack(
         children: [
           Container(
-            color: Colors.black,
+            color: Color.fromRGBO(52, 58, 64, 1),
           ),
           Column(
             children: [
-              Expanded(flex: 1, child: ClockTimer()),
-              Expanded(
-                flex: 4,
-                child: SizedBox(
-                  child: Stack(
-                    children: [
-                      CommandDisplay(),
-                      Align(heightFactor: 3.5, child: OnKeyBoard())
-                    ],
-                  ),
-                ),
-              )
+              Expanded(flex: 5, child: ClockTimer()),
+              // Expanded(
+              //   flex: 4,
+              //   child: SizedBox(
+              //     child: Stack(children: [
+              //       // CommandDisplay(),
+
+              //       //   Align(heightFactor: 3.5, child: OnKeyBoard())
+              //     ]),
+              //   ),
+              // )
             ],
           )
         ],
