@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   android_alarm_manager_plus: ^1.0.2
   just_audio: ^0.9.6
+  provider: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -74,11 +75,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Helvetica
+      fonts:
+        - asset: fonts/Helvetica-Bold.ttf
+        - asset: fonts/Helvetica.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
