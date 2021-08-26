@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lost_alarm/main_screen_components/clock.dart';
 import 'package:lost_alarm/main_screen_components/keyboard.dart';
+import 'package:lost_alarm/main_screen_components/lost_clock_components/lost_timer.dart';
 import 'package:lost_alarm/main_screen_components/terminal_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -14,12 +15,16 @@ class Terminal extends StatefulWidget {
 class _TerminalState extends State<Terminal> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => Command(),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [CommandDisplay(), OnkeyBoard()],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(child: LostClock()),
+        SizedBox(
+          height: 50,
+        ),
+        Expanded(child: CommandDisplay()),
+        Expanded(child: OnkeyBoard())
+      ],
     );
   }
 }

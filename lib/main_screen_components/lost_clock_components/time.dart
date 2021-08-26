@@ -1,0 +1,1 @@
+enum TimeOfDay { am, pm }
