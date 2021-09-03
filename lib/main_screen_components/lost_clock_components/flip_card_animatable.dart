@@ -1,90 +1,106 @@
-import 'dart:async';
 import 'dart:math';
+
+
+import 'package:lost_alarm/logic_designs/alarm.dart';
+import 'package:lost_alarm/logic_designs/clock.dart';
 
 import 'clipper.dart';
 import 'time_card.dart';
 import 'package:flutter/material.dart';
 
-class FlipCardAnimatable extends StatefulWidget {
+class FlipCardAnimateAble extends StatefulWidget {
   final int number;
   final bool isRunning;
-  final int time;
+  final Color textColor;
+  final Color cardColor;
 
-  FlipCardAnimatable(
-      {Key? key,
-      required this.number,
-      required this.isRunning,
-      required this.time})
-      : super(key: key);
+  FlipCardAnimateAble({
+    Key? key,
+    required this.number,
+    required this.isRunning,
+    required this.textColor,
+    required this.cardColor,
+  }) : super(key: key);
 
   @override
-  _FlipCardAnimatableState createState() => _FlipCardAnimatableState();
+  _FlipCardAnimateAbleState createState() => _FlipCardAnimateAbleState();
 }
 
-class _FlipCardAnimatableState extends State<FlipCardAnimatable>
+class _FlipCardAnimateAbleState extends State<FlipCardAnimateAble>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation _anime;
   late Animation _backanime;
   late int prevNumber;
   late int latestNumber;
+  bool isFliped = false;
+
 
   @override
   void initState() {
-    latestNumber = widget.number;
+    super.initState();
 
-    prevNumber = 0;
-    latestNumber -= 0;
+
+    latestNumber = widget.number;
+    if(ClockPreferences.getIsRunning() == true){
+      prevNumber = widget.number;
+    } else {
+      prevNumber = 0;
+    }
+
+    // latestNumber -= 0;
 
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
     _anime = IntTween(begin: 0, end: 180).animate(_controller);
     _backanime = IntTween(begin: 180, end: 360).animate(_controller);
-
     _controller.addListener(() {
-      /// makes the animation
-      setState(() {});
+      setState(() {
+
+      });
     });
-    _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        /// if the animation is finished for the flip it calls the function
-        /// to decrement the latest value
-        decrement();
-      }
-    });
-    super.initState();
+
+
   }
 
-  decrement() {
-    Timer.periodic(Duration(seconds: widget.time, milliseconds: 600), (timer) {
-      /// main logic for the flipper
-      if (widget.isRunning == true) {
-        prevNumber = latestNumber;
-        latestNumber -= 1;
-        _controller.reset();
-        _controller.forward();
-      }
-      if (widget.isRunning == true && latestNumber < 0) {
-        latestNumber = widget.number;
-        _controller.reset();
-        _controller.forward();
-      }
-
-      timer.cancel();
-    });
-  }
+  // playAudio() async {
+  //   await player.setAsset("assets/Sound/click/Click.wav");
+  //   player.play();
+  //   await player.stop();
+  // }
 
   @override
-  void didUpdateWidget(covariant FlipCardAnimatable oldWidget) {
+  void didUpdateWidget(covariant FlipCardAnimateAble oldWidget) {
     /// if the alarm starts the flip animation starts
-    print("hi");
+
+
     if (widget.isRunning == true) {
-      if (oldWidget.number == 0) {
-        // print("hi");
-        latestNumber = widget.number;
-      }
-      _controller.forward();
-    } else {
+
+      if (oldWidget.number != widget.number) {
+        setState(() {
+         
+          latestNumber = widget.number;
+        });
+          _controller.forward();
+          setState(() {
+            prevNumber = oldWidget.number;
+            // Alarm.play();
+          });
+          // playAudio();
+        }
+
+
+        _controller.addStatusListener((status) {
+          if (status == AnimationStatus.completed && widget.isRunning == true) {
+
+              prevNumber = widget.number;
+              _controller.reset();
+
+            // _controller.forward();
+          }
+        });
+
+    } else if (widget.isRunning == false) {
       _controller.addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _controller.stop();
@@ -97,28 +113,32 @@ class _FlipCardAnimatableState extends State<FlipCardAnimatable>
 
   @override
   void dispose() {
-    // _controller.dispose();
-    print("I have been disposed");
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Flipable(
-        latestNumber: latestNumber,
-        anime: _anime,
-        prevNumber: prevNumber,
-        backanime: _backanime);
+    return Flippable(
+      latestNumber: latestNumber,
+      anime: _anime,
+      prevNumber: prevNumber,
+      backanime: _backanime,
+      cardColor: widget.cardColor,
+      textColor: widget.textColor,
+    );
   }
 }
 
-class Flipable extends StatelessWidget {
-  const Flipable({
+class Flippable extends StatelessWidget {
+  const Flippable({
     Key? key,
     required this.latestNumber,
     required Animation anime,
     required this.prevNumber,
     required Animation backanime,
+    required this.textColor,
+    required this.cardColor,
   })  : _anime = anime,
         _backanime = backanime,
         super(key: key);
@@ -127,20 +147,27 @@ class Flipable extends StatelessWidget {
   final Animation _anime;
   final int prevNumber;
   final Animation _backanime;
+  final Color textColor;
+  final Color cardColor;
 
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
       ClipRect(
         clipper: ClipTop(),
-        child: TimeCard(
-          number: latestNumber,
+        child: Container(
+          child: TimeCard(
+            textColor: textColor,
+            number: latestNumber,
+            cardColor: cardColor,
+          ),
         ),
       ),
       if (_anime.value < 180)
         ClipRect(
           clipper: ClipBottom(),
-          child: TimeCard(number: prevNumber),
+          child: TimeCard(
+              textColor: textColor, cardColor: cardColor, number: prevNumber),
         ),
       if (_anime.value > 90)
         Transform(
@@ -155,6 +182,8 @@ class Flipable extends StatelessWidget {
               clipper: ClipBottom(),
               child: TimeCard(
                 number: latestNumber,
+                cardColor: cardColor,
+                textColor: textColor,
               ),
             ),
           ),
@@ -167,7 +196,11 @@ class Flipable extends StatelessWidget {
             ..rotateX((_anime.value / 180) * pi),
           child: ClipRect(
             clipper: ClipTop(),
-            child: TimeCard(number: prevNumber),
+            child: TimeCard(
+              number: prevNumber,
+              textColor: textColor,
+              cardColor: cardColor,
+            ),
           ),
         ),
     ]);
